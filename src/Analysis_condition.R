@@ -3,6 +3,7 @@
 
 
 # Create plot
+eels$Stadium <- factor(eels$Stadium)
 boxplot(eels$K~eels$HW/eels$Stadium, ylab = "K")
 
 # Apply anova with nested design (HW is nested in stadium)
