@@ -31,7 +31,5 @@ barplot(data, col=colors()[c(29,554)] , border="white", font.axis=2, beside=T, l
 glm <- glm(count ~ HW/Stadium,family=poisson(link="log"), data=ct)
 summary(glm)
 
-library(lme4)
-fm1 <- glmer(count ~ HW+(1 | Stadium), family=poisson(link="log"), ct)
 
 
