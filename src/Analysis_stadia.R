@@ -27,9 +27,11 @@ barplot(data, col=colors()[c(29,554)] , border="white", space=0.04, font.axis=2,
 # Grouped barplot
 barplot(data, col=colors()[c(29,554)] , border="white", font.axis=2, beside=T, legend=rownames(data), xlab="Stadium", ylab = "Count", ylim=c(0,30), font.lab=2)
 
+# Apply Poisson GLM --> count data
+glm <- glm(count ~ HW/Stadium,family=poisson(link="log"), data=ct)
+summary(glm)
 
-
-
-
+library(lme4)
+fm1 <- glmer(count ~ HW+(1 | Stadium), family=poisson(link="log"), ct)
 
 
