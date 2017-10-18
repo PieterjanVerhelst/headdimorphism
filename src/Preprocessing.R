@@ -8,12 +8,9 @@ library(lubridate)
 
 rm(list = ls())
 
-# Set working directory
-setwd("D:/Psverhel/OneDrive - UGent/Documents/Doctoraat/Kopbreedte")
-path<-"D:/Psverhel/OneDrive - UGent/Documents/Doctoraat/Kopbreedte"
 
 # Upload eel data
-eels <- read.csv("~/Doctoraat/Kopbreedte/Eels.csv",sep=";",stringsAsFactors = FALSE)
+eels <- read.csv("./data/raw/Eels.csv",sep=";",stringsAsFactors = FALSE)
 
 # Set stadium as factor
 #eels$Stadium <- factor(eels$Stadium)
