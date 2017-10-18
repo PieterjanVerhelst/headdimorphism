@@ -3,7 +3,7 @@
 
 
 # Upload eel data
-hw <- read.csv("~/Doctoraat/Kopbreedte/Headdimorphism.csv",sep=";",stringsAsFactors = FALSE)
+hw <- read.csv("./data/raw/Headdimorphism.csv",sep=";",stringsAsFactors = FALSE)
 
 # Merge two datasets
 eels <- merge(eels, hw, by="ID")
