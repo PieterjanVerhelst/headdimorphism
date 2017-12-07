@@ -1,8 +1,7 @@
 # Link data with onset of migration and migration duration to the dataset
 # By Pieterjan Verhelst
 
-library(dplyr
-        )
+library(dplyr)
 
 # Upload duration and onset data
 t<- read.csv("./data/external/duration.csv",sep=",",stringsAsFactors = FALSE)
