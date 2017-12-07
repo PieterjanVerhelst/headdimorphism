@@ -46,5 +46,10 @@ eels$Index<-gsub(",", ".", eels$Index)
 eels$Weight <- as.numeric(eels$Weight)
 eels$Index <- as.numeric(eels$Index)
 
+# Remove recaptured eels
+eels <- eels[!eels$Hervangst %in% c("1"), ]
+
+
+
 
 
