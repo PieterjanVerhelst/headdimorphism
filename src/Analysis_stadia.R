@@ -48,13 +48,16 @@ Mset$oStage <- with(Mset, ordered(Stage)) # ordered factor
 
 Mset # de dataset
 
-# 	 Stage NH BH Tot       pNH       pBH nStage oStage
-# 1  FIII  9 26  35 0.2571429 0.7428571      1   FIII
-# 2   FIV  3  7  10 0.3000000 0.7000000      2    FIV
-# 3    FV 13 14  27 0.4814815 0.5185185      3     FV
+#Stage NH inter BH Tot       pNH       pBH nStage oStage
+#1     I 11    48 12  71 0.1549296 0.1690141      1      I
+#2   FII 13    62 13  88 0.1477273 0.1477273      2    FII
+#3  FIII 19    82 20 121 0.1570248 0.1652893      3   FIII
+#4   FIV  2    12  2  16 0.1250000 0.1250000      4    FIV
+#5    FV  7    32  6  45 0.1555556 0.1333333      5     FV
+#6   MII  0     4  3   7 0.0000000 0.4285714      6    MII
 
-# het percentage NH stijgt van 25.7 %, over 30 % naar 48 %
-# via een logistisch model kunnen we nu testen of deze stijging significant is.
+# het percentage NH stijgt of daalt niet, maar blijft gelijk
+# via een logistisch model kunnen we nu testen of er desalniettemin een significant verschil is
 
 # --- MODEL 1: het nulmodel ---
 
@@ -67,13 +70,13 @@ GfitB_null <- glm(pNH ~ 1, data = Mset, family = 'binomial', weights = Tot)
 # anova
 
 as.data.frame(anova(GfitB_null))
-#      Df Deviance Resid. Df Resid. Dev
-# NULL NA       NA         2   3.468765
+#Df Deviance Resid. Df Resid. Dev
+#NULL NA       NA         5   2.430748
 
-# De Residual Deviance? is 3.47 bij 2 vrijheidsgraden. 
-# De correspondeerde p-waarde is 0.17
+# De Residual Deviance? is 2.43 bij 5 vrijheidsgraden. 
+# De correspondeerde p-waarde is 0.79
 
-1 - pchisq(3.468765, 2) 
+1 - pchisq(2.430748, 5) 
 
 # We kunnen bijgevolg het null-model niet verwerpen, 
 # maar als we de residuals bekijken dan zien we een patroon
@@ -82,10 +85,11 @@ as.data.frame(anova(GfitB_null))
 # Pearson residuals
 
 residuals(GfitB_null, type = 'pearson')
-# in de residuals tekent zich een stijgende trend af
+# Indien in de residuals een trend gevonden wordt (vb stijgt over stadia), dan verder ondezoeken
+# In geval met alle data, geen trend in de residuals
 
-#          1          2          3 
-# -1.1193680 -0.3136606  1.4653443 
+# 1           2           3           4           5           6 
+#0.13009548 -0.04468014  0.23448214 -0.27405100  0.11534996 -1.10893180 
 
 # --- MODEL 2: relatie met maturiteit ---
 
