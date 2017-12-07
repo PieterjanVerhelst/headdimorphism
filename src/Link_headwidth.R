@@ -64,6 +64,27 @@ for (i in 1:dim(eels)[1]){
 eels$class <- factor(eels$class)
 
 
+# Check if residuals don't differ to much between maturation stadia, otherwise split the analysis up
+# Calculate mean and sd of residuals for each eel stadium
+#eels$Stadium <- factor( eels$Stadium , ordered = FALSE )
+subset <- eels %>%
+  group_by(Stadium) %>%
+  select(Stadium, diff) %>%
+  summarise(
+    stadium_mean = mean(diff),
+    stadium_sd = sd(diff)
+  )
+
+# Create plot
+plot(1:6,subset$stadium_mean,pch=19,xlab="",ylab="",xaxt="n",xlim=c(0.5,6),
+     ylim=c(min(subset$stadium_mean-subset$stadium_sd),max((subset$stadium_mean+subset$stadium_sd))))
+lines(rbind(1:6,1:6,NA),rbind(subset$stadium_mean-subset$stadium_sd,subset$stadium_mean+subset$stadium_sd,NA))
+axis(side=1,at=1:6,labels=subset$Stadium)
+
+
+
+
+
 
 
 
