@@ -81,7 +81,13 @@ plot(1:6,subset$stadium_mean,pch=19,xlab="",ylab="",xaxt="n",xlim=c(0.5,6),
 lines(rbind(1:6,1:6,NA),rbind(subset$stadium_mean-subset$stadium_sd,subset$stadium_mean+subset$stadium_sd,NA))
 axis(side=1,at=1:6,labels=subset$Stadium)
 
+# Anova
+boxplot(eels$diff ~ eels$Stadium)
+aov <- aov(eels$diff ~ eels$Stadium)
+plot(aov)
+summary(aov)
 
+TukeyHSD(aov, conf.level=0.95, ordered = FALSE)
 
 
 
