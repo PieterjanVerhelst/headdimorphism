@@ -10,11 +10,11 @@ plot(eels$Weight~eels$Length)
 #### Determine relative condition factor
 lm1 <- lm(log(eels$Weight)~log(eels$Length))
 fitPlot(lm1,xlab="log Total Length (mm)",ylab="log Weight (g)",main="")
-summary(lm1) # deduce a and b constants, R² = 0.97; Note that a = e^intercept!
+summary(lm1) # deduce a and b constants, R? = 0.97; Note that a = e^intercept!
 
 e <- exp(1)
 
-eels$K <- eels$Weight/((e^-7.25836) * (eels$Length^3.23242))
+eels$K <- eels$Weight/((e^-7.26432) * (eels$Length^3.23405))
 
 # Fulton's K
 # eels$Kful <- 100 * (eels$Weight / (eels$Length^3))
