@@ -45,15 +45,23 @@ eels$diff <- eels$HWHL - eels$HWHLexp         # when positive, head is wider tha
 eels$diff_mean <- mean(eels$diff)
 eels$diff_sd <- sd(eels$diff)
 
+
+
 # Classify headwidth of the eels
 # NH: residual < mean - sd
 # intermediate: mean +/- sd
 # BH: residual > mean + sd
 
+for (i in 1:dim(eels)[1]){
+  if (eels$diff[i] < (eels$diff_mean - eels$diff_sd)){
+  eels$class [i] = "NH"
+} else if (eels$diff[i] > (eels$diff_mean + eels$diff_sd)){
+  eels$class [i] = "BH"
+} else{
+  eels$class[i] = "inter"
+}}
 
-
-
-
+eels$class <- factor(eels$class)
 
 
 
