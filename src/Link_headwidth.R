@@ -30,13 +30,13 @@ lm(eels$HWHL~eels$Length)
 #  lm(formula = eels$HWHL ~ eels$Length)
 #Coefficients:
 #  (Intercept)  eels$Length  
-#0.261124     0.000927            intercept is 0.261124 and slope 0.000927: y = 0.000927x + 0.261124 (y = ax + b)
+#   0.260697     0.000936             intercept is 0.260697 and slope 0.000936: y = 0.000936x + 0.260697 (y = ax + b)
 
-abline(0.261124, 0.000927)
+abline(0.260697, 0.000936)
 # or: abline(lm(eels$HWHL~eels$Length))
 
 # Calculate expected HWHL for each eel
-eels$HWHLexp <- (0.000927 * eels$Length) + 0.261124 
+eels$HWHLexp <- (0.000936 * eels$Length) + 0.260697 
 
 # Calculate difference between real and expected (= residuals)
 eels$diff <- eels$HWHL - eels$HWHLexp         # when positive, head is wider than expected (and vice versa)

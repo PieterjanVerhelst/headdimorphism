@@ -14,7 +14,7 @@ summary(lm1) # deduce a and b constants, R? = 0.97; Note that a = e^intercept!
 
 e <- exp(1)
 
-eels$K <- eels$Weight/((e^-7.26432) * (eels$Length^3.23405))
+eels$K <- eels$Weight/((e^-7.36117) * (eels$Length^3.25776))
 
 # Fulton's K
 # eels$Kful <- 100 * (eels$Weight / (eels$Length^3))
@@ -26,7 +26,7 @@ eels$K <- eels$Weight/((e^-7.26432) * (eels$Length^3.23405))
 hoCoef(lm1,2,3)
 # p-value < 0.05: allometric growth (reject H0)
 confint(lm1)
-# allometric growth with an exponent parameter (b) between 3.18 and 3.28, with 95% confidence.
+# allometric growth with an exponent parameter (b) between 3.20 and 3.31, with 95% confidence.
 
 
 #### Examine differences in condition factor
