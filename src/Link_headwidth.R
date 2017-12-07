@@ -18,9 +18,44 @@ colnames(hd)[2] <- "HW"   # Width.skull is head width = HW
 colnames(hd)[3] <- "HL"   # Head.length is head length = HL
 
 # Calculate ratio HW:HL
-hd$HWHL <- hd$HW/hw$HL
+hd$HWHL <- hd$HW/hd$HL
 
 # Merge two datasets
 eels <- merge(eels, hd, by="ID")
+
+# Plot HWHL to total length and calculate residuals
+plot(eels$HWHL~eels$Length)
+lm(eels$HWHL~eels$Length)
+#Call:
+#  lm(formula = eels$HWHL ~ eels$Length)
+#Coefficients:
+#  (Intercept)  eels$Length  
+#0.261124     0.000927            intercept is 0.261124 and slope 0.000927: y = 0.000927x + 0.261124 (y = ax + b)
+
+abline(0.261124, 0.000927)
+# or: abline(lm(eels$HWHL~eels$Length))
+
+# Calculate expected HWHL for each eel
+eels$HWHLexp <- (0.000927 * eels$Length) + 0.261124 
+
+# Calculate difference between real and expected (= residuals)
+eels$diff <- eels$HWHL - eels$HWHLexp         # when positive, head is wider than expected (and vice versa)
+
+# Calculate mean and sd of residuals
+eels$diff_mean <- mean(eels$diff)
+eels$diff_sd <- sd(eels$diff)
+
+# Classify headwidth of the eels
+# NH: residual < mean - sd
+# intermediate: mean +/- sd
+# BH: residual > mean + sd
+
+
+
+
+
+
+
+
 
 
