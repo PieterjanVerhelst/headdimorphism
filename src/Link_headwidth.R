@@ -4,23 +4,23 @@
 library(dplyr)
 
 # Upload eel data
-hw <- read.csv("./data/raw/Headdimorphism.csv",sep=";",stringsAsFactors = FALSE)
+hd <- read.csv("./data/raw/Headdimorphism.csv",sep=";",stringsAsFactors = FALSE)
 
 # Select relevant columns, substitute ',' by '.' and set as numeric
-hw <- select(hw, ID, Width.skull, Head.length)
-hw$Width.skull <- gsub("\\,", ".", hw$Width.skull)
-hw$Width.skull <- as.numeric(hw$Width.skull)
-hw$Head.length <- gsub("\\,", ".", hw$Head.length)
-hw$Head.length <- as.numeric(hw$Head.length)
+hd <- select(hd, ID, Width.skull, Head.length)
+hd$Width.skull <- gsub("\\,", ".", hd$Width.skull)
+hd$Width.skull <- as.numeric(hd$Width.skull)
+hd$Head.length <- gsub("\\,", ".", hd$Head.length)
+hd$Head.length <- as.numeric(hd$Head.length)
 
 # Rename columns
-colnames(hw)[2] <- "HW"   # Width.skull is head width = HW
-colnames(hw)[3] <- "HL"   # Head.length is head length = HL
+colnames(hd)[2] <- "HW"   # Width.skull is head width = HW
+colnames(hd)[3] <- "HL"   # Head.length is head length = HL
 
 # Calculate ratio HW:HL
-hw$HWHL <- hw$HW/hw$HL
+hd$HWHL <- hd$HW/hw$HL
 
 # Merge two datasets
-eels <- merge(eels, hw, by="ID")
+eels <- merge(eels, hd, by="ID")
 
 
