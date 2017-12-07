@@ -16,7 +16,7 @@ boxplot(eels$K~eels$class, ylab = "K")
 boxplot(eels$K~eels$class/eels$Stadium, ylab = "K")
 
 # Apply anova with nested design (HW is nested in stadium)
-aov <- aov(eels$K ~ eels$class/eels$Stadium)
+aov <- aov(eels$K ~ eels$class/eels$Stadium)     # Stadium is nested within class
 plot(aov)  # Check assumptions
 summary(aov)
 
