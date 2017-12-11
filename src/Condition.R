@@ -26,7 +26,7 @@ eels$K <- eels$Weight/((e^-7.27641) * (eels$Length^3.223726))
 hoCoef(lm1,2,3)
 # p-value < 0.05: allometric growth (reject H0)
 confint(lm1)
-# allometric growth with an exponent parameter (b) between 3.20 and 3.31, with 95% confidence.
+# allometric growth with an exponent parameter (b) between 3.19 and 3.29, with 95% confidence.
 
 
 #### Examine differences in condition factor
