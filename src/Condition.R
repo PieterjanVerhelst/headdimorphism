@@ -14,7 +14,7 @@ summary(lm1) # deduce a and b constants, R? = 0.97; Note that a = e^intercept!
 
 e <- exp(1)
 
-eels$K <- eels$Weight/((e^-7.27641) * (eels$Length^3.223726))
+eels$K <- eels$Weight/((e^-7.36117) * (eels$Length^3.25776))
 
 # Fulton's K
 # eels$Kful <- 100 * (eels$Weight / (eels$Length^3))
