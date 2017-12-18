@@ -37,7 +37,7 @@ fig_K_class <- ggplot(eels, aes(x = class,
                 y = eels_per_class_list,
                 label = as.character(eel_per_class$n_eels)),
             col = 'black', size = 4) +
-  scale_x_discrete(limits=c("NH","inter","BH")) +    # Changes oreder of plots
+  scale_x_discrete(limits=c("NH","IH","BH")) +    # Changes oreder of plots
   xlab("Head width class") +
   theme(axis.title.y = element_text(margin = margin(r = 10))) +
   theme(axis.text = element_text(size = 12),
