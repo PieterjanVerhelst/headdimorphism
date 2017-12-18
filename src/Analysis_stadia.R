@@ -15,14 +15,14 @@ data <- matrix(data = your.mat.data,
                ncol = 6,
                byrow = TRUE)
 colnames(data)=c("I","FII","FIII","FIV","FV","MII")
-rownames(data)=c("NH","inter","BH")
+rownames(data)=c("NH","IH","BH")
 
 
 # Get the stacked barplot
 barplot(data, col=colors()[c(29,300,554)] , border="white", space=0.04, font.axis=2, xlab="group")
 
 # Grouped barplot
-barplot(data, col=colors()[c(29,300, 554)] , border="white", font.axis=2, beside=T, legend=rownames(data), xlab="Stadium", ylab = "Count", ylim=c(0,100), font.lab=2)
+barplot(data, col=colors()[c(230,180, 155)] , border="white", font.axis=2, beside=T, legend=rownames(data), xlab="Stadium", ylab = "Count", ylim=c(0,100), font.lab=2)
 
 
 
@@ -35,11 +35,11 @@ flevS <- c("I", "FII", "FIII", "FIV", "FV", "MII")
 Mset <- data.frame(
   Stage = factor(flevS, flevS), # guantees correct order of levels
   NH = c(11, 13, 19, 2, 7, 0), 
-  inter = c(48, 62, 82, 12, 32, 4),
+  IH = c(48, 62, 82, 12, 32, 4),
   BH = c(12, 13, 20, 2, 6, 3)
 )
 
-Mset$Tot <- with(Mset, NH + inter + BH)
+Mset$Tot <- with(Mset, NH + IH + BH)
 Mset$pNH <- with(Mset, NH / Tot)
 Mset$pBH <- with(Mset, BH / Tot)
 
