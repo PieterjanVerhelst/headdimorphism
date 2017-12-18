@@ -1,5 +1,12 @@
 # Analysis if number of NH and BH differ between maturation stadia
-# Paul Quataert
+# Paul Quataert en Pieterjan Verhelst
+
+require(foreign)
+require(ggplot2)
+require(MASS)
+require(Hmisc)
+require(reshape2)
+
 
 
 # Determine number of NH, inter and BH for each maturation stadium
@@ -25,6 +32,10 @@ barplot(data, col=colors()[c(29,300,554)] , border="white", space=0.04, font.axi
 barplot(data, col=colors()[c(230,180, 155)] , border="white", font.axis=2, beside=T, legend=rownames(data), xlab="Stadium", ylab = "Count", ylim=c(0,100), font.lab=2)
 
 
+
+###############################
+# LOGISTIC REGRESSION
+###############################
 
 #### Analysis
 
@@ -123,3 +134,54 @@ summary(GfitB_ord)$coef
 # de p-waarde geassocieerd met een lineaire trend is 0.07. 
 # Dat is net niet signifcant. 
 # vermoedelijk zal met meer gegevens? deze component significant worden.
+
+
+
+
+###############################
+# ORDINAL LOGISTIC REGRESSION
+###############################
+
+subset <- eels %>%
+  group_by(class, Stadium) %>%
+  summarise(count=n())
+
+head(subset)
+
+# Create ordered factor
+subset$class <- factor(subset$class, levels=c("NH", "IH", "BH"), ordered=TRUE)
+subset$Stadium <- factor(subset$class, ordered=FALSE)
+
+
+# Ordinal logistic regression
+m <- polr(class ~ Stadium, data=subset, Hess=TRUE)
+summary(m)
+
+# Calculate metrics
+ctable <- coef(summary(m))
+p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
+ctable <- cbind(ctable, "p value" = p)
+
+#Value Std. Error      t value   p value
+#StadiumIH 38.17324   42684.19 0.0008943181 0.9992864
+#StadiumBH 66.72491   42690.14 0.0015630051 0.9987529
+#NH|IH     22.93224   42676.43 0.0005373515 0.9995713
+#IH|BH     52.71760   42687.78 0.0012349577 0.9990146
+
+# For an change in stadium, an increase of 38 in IH is expected and increase of 67 in BH.
+
+
+# Confidence intervals
+# If the 95% CI does not cross 0, the parameter estimate is statistically significant
+#ci <- confint(m)           #  default method gives profiled CIs
+ci <- confint.default(m)    # CIs assuming normality
+exp(coef(m))
+## OR (odds ratio) and CI
+exp(cbind(OR = coef(m), ci))
+
+
+
+
+
+
+
