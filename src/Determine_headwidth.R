@@ -64,6 +64,27 @@ for (i in 1:dim(eels)[1]){
 eels$class <- factor(eels$class)
 
 
+# Create histogram
+hist(eels$diff, breaks = 20, xlim=c(-0.10, 0.15))
+
+ggplot(data=eels, aes(eels$diff, fill = class)) +
+  scale_fill_grey() +
+  theme_classic() +
+  theme(legend.position="none") + 
+  geom_histogram(breaks=seq(-0.10, 0.15, by=0.01)) +
+  labs(x="Residual values", y="Count") +
+  geom_vline(aes(xintercept=mean(diff)),
+             color="black", linetype="dashed", size=1) +
+  geom_errorbarh(aes(xmax = diff_mean + diff_sd, xmin = diff_mean - diff_sd))
+  
+  
+  
+  geom_errorbar(aes(xmin=-0.02973823, xmax=0.02973823), colour="black")
+
+
+
+
+
 # Check if residuals don't differ to much between maturation stadia, otherwise split the analysis up
 # Calculate mean and sd of residuals for each eel stadium
 #eels$Stadium <- factor( eels$Stadium , ordered = FALSE )
