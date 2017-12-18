@@ -74,15 +74,8 @@ ggplot(data=eels, aes(eels$diff, fill = class)) +
   geom_histogram(breaks=seq(-0.10, 0.15, by=0.01)) +
   labs(x="Residual values", y="Count") +
   geom_vline(aes(xintercept=mean(diff)),
-             color="black", linetype="dashed", size=1) +
-  geom_errorbarh(aes(xmax = diff_mean + diff_sd, xmin = diff_mean - diff_sd))
+             color="black", linetype="dashed", size=1)
   
-  
-  
-  geom_errorbar(aes(xmin=-0.02973823, xmax=0.02973823), colour="black")
-
-
-
 
 
 # Check if residuals don't differ to much between maturation stadia, otherwise split the analysis up
