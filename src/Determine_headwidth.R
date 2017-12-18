@@ -58,7 +58,7 @@ for (i in 1:dim(eels)[1]){
 } else if (eels$diff[i] > (eels$diff_mean + eels$diff_sd)){
   eels$class [i] = "BH"
 } else{
-  eels$class[i] = "inter"
+  eels$class[i] = "IH"
 }}
 
 eels$class <- factor(eels$class)
