@@ -29,7 +29,7 @@ rownames(data)=c("NH","IH","BH")
 barplot(data, col=colors()[c(29,300,554)] , border="white", space=0.04, font.axis=2, xlab="group")
 
 # Grouped barplot
-barplot(data, col=colors()[c(230,180, 155)] , border="white", font.axis=2, beside=T, legend=rownames(data), xlab="Stadium", ylab = "Count", ylim=c(0,100), font.lab=2)
+barplot(data, col=colors()[c(230,180, 155)] , border="white", font.axis=2, beside=T, legend=rownames(data), xlab="Stage", ylab = "Number of eels", ylim=c(0,100), font.lab=2)
 
 
 
