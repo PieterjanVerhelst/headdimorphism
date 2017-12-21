@@ -14,3 +14,5 @@ Analysis of European eel head dimorphism in the Scheldt River basin
     5. `Analysis_stadia.R`: analyse if number of narrow and broad heads differ between maturation stadia
     6. `Link_onset_duration.R`: Link the onset and duration of migration to the dataset
     7. `Analysis_onset.R`: analyse if number of narrow and broad heads differ between months of onset
+    8. `Analysis_swimspeed.R`: analyse if swim speed differs between eels with different head width class
+
