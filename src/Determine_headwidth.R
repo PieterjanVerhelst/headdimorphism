@@ -2,6 +2,7 @@
 # By Pieterjan Verhelst
 
 library(dplyr)
+library(ggplot2)
 
 # Upload eel data
 hd <- read.csv("./data/raw/Headdimorphism.csv",sep=";",stringsAsFactors = FALSE)
@@ -96,15 +97,11 @@ lines(rbind(1:6,1:6,NA),rbind(subset$stadium_mean-subset$stadium_sd,subset$stadi
 axis(side=1,at=1:6,labels=subset$Stadium)
 
 # Anova
-boxplot(eels$diff ~ eels$Stadium)
+boxplot(eels$diff ~ eels$Stadium, ylab="Residuals", xlab="Stage")
 aov <- aov(eels$diff ~ eels$Stadium)
 plot(aov)
 summary(aov)
 
 TukeyHSD(aov, conf.level=0.95, ordered = FALSE)
-
-
-
-
 
 
