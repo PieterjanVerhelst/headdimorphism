@@ -164,17 +164,26 @@ p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
 ctable <- cbind(ctable, "p value" = p)
 
 #Value Std. Error      t value   p value
-#StadiumIH 38.17324   42684.19 0.0008943181 0.9992864
-#StadiumBH 66.72491   42690.14 0.0015630051 0.9987529
-#NH|IH     22.93224   42676.43 0.0005373515 0.9995713
-#IH|BH     52.71760   42687.78 0.0012349577 0.9990146
+#StadiumFII  -1.148292e-05   1.517860 -7.565207e-06 0.9999940
+#StadiumFIII -1.148292e-05   1.517860 -7.565207e-06 0.9999940
+#StadiumFIV  -1.148292e-05   1.517860 -7.565207e-06 0.9999940
+#StadiumFV   -1.148292e-05   1.517860 -7.565207e-06 0.9999940
+#StadiumMII   1.045218e+00   1.677916  6.229265e-01 0.5333328
+#NH|IH       -7.611106e-01   1.107766 -6.870681e-01 0.4920398
+#IH|BH        7.611079e-01   1.107766  6.870657e-01 0.4920413
 
-# For an change in stadium, an increase of 38 in IH is expected and increase of 67 in BH.
+# For a change in stadium from I to FII, a decrease of 1.14e-05 in IH is expected
 
 
 # Confidence intervals
 # If the 95% CI does not cross 0, the parameter estimate is statistically significant
-#ci <- confint(m)           #  default method gives profiled CIs
+ci <- confint(m)           #  default method gives profiled CIs
+# 2.5 %   97.5 %
+#StadiumFII  -3.073262 3.073262
+#StadiumFIII -3.073262 3.073262
+#StadiumFIV  -3.073262 3.073262
+#StadiumFV   -3.073262 3.073262
+#StadiumMII  -2.214854 4.733948
 ci <- confint.default(m)    # CIs assuming normality
 exp(coef(m))
 ## OR (odds ratio) and CI
