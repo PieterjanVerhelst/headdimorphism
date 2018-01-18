@@ -148,9 +148,10 @@ subset <- eels %>%
 
 head(subset)
 
+
 # Create ordered factor
 subset$class <- factor(subset$class, levels=c("NH", "IH", "BH"), ordered=TRUE)
-subset$Stadium <- factor(subset$class, ordered=FALSE)
+subset$Stadium <- factor(subset$Stadium, ordered=FALSE)
 
 
 # Ordinal logistic regression
