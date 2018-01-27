@@ -14,16 +14,6 @@ m <- read.csv("./data/raw/migration.csv",sep=",",stringsAsFactors = FALSE)
 m <- filter(m, network == "Zeeschelde")
 
 
-# Select movement1 == 1 and realistic swim speeds
-m1 <- filter(m, movement1 == 1)
-summary(m1$swimspeed)
-boxplot(m1$swimspeed)
-m1 <- filter(m1, swimspeed <= 1.3120000)      # Take swim speed <= the max swim speed from the summary
-m1 <- filter(m1, swimspeed >= 0.0002276)      # Take swim speed >= the min swim speed from the summary
-summary(m1$swimspeed)
-boxplot(m1$swimspeed)
-
-
 # Extract head width classes
 # Run 'Determine_headwidth.R' manually
 hw <- select(eels, Zendernummer, class)
@@ -34,11 +24,81 @@ hw <- na.omit(hw)
 table(hw$class)
 
 # Merge head width class (hw dataset) to swim speeds (m1 dataset)
-m1$Transmitter<-gsub("A69-1601-","",m1$Transmitter)
-m2 <- merge(m1, hw, by="Transmitter")
+m$Transmitter<-gsub("A69-1601-","",m$Transmitter)
+m1 <- merge(m, hw, by="Transmitter")
+
+
+
+# Eel 52657 had two phase migration due to its aborted migration which proceeded two months later
+# Select last migration phase
+ind52657 <- m1[which(m1$Transmitter == "52657"),]
+ind52657 <- ind52657[order(as.POSIXct(strptime(ind52657$Arrival,"%Y-%m-%d %H:%M:%S"))),]
+# Eel is considered migratory from station s-wetteren 2017-02-23 16:58:00
+# Select those data
+ind52657 <- ind52657[!ind52657$Arrival < '2017-02-23 16:58:00',]
+
+# Now remove that eel from migration dataset
+m1 <- m1[!m1$Transmitter %in% c("52657"), ]
+# Bind individual dataset to migration dataset
+m1 <- rbind(m1, ind52657)
+
+
+
+
+
+
+
+# Calculate migration speed
+# Calculate migration time and distance + plot migration time
+mt = m1 %>%
+  group_by(Transmitter)%>%
+  select(Transmitter, Arrivalnum, Departurenum, Station_distance) %>%
+  summarise( seconds=with(m1, max(Departurenum) - min(Arrivalnum)),
+             dist= with(m1, max(Station_distance) - min(Station_distance))
+  )
+
+
+# Calculate tracking time in days
+mt$days=mt$seconds/(60*60*24)
+mt$days=round(mt$days, 2)
+par(mar=c(6,4.1,4.1,2.1))
+barplot(mt$days, names.arg=mt$Transmitter, cex.names=0.8, ylim=c(0,100),las=2)
+
+
+
+
+
+
+# Calculate migration speed whole study area
+mt$speed <- mt$dist / mt$seconds
+mean(mt$speed)
+sd(mt$speed)
+min(mt$speed)
+max(mt$speed)
+
+# Summarise according to subearea
+aggregate(mt$speed, list(mt$area), mean)
+aggregate(mt$speed, list(mt$area), sd)
+aggregate(mt$speed, list(mt$area), min)
+aggregate(mt$speed, list(mt$area), max)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Create boxplot
-boxplot(m2$swimspeed~m2$class, ylab = "Swim speed (m/s)") 
+boxplot(m1$swimspeed~m2$class, ylab = "Swim speed (m/s)") 
 # Create elaborated boxplot with number of eels per head width class
 # make a named list for the location of the number of eels
 eel_per_class <- m2 %>% group_by(class) %>% 
