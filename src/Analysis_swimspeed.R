@@ -45,14 +45,11 @@ m1 <- rbind(m1, ind52657)
 
 
 
-
-
-
 # Calculate migration speed
 # Calculate migration time and distance + plot migration time
 mt = m1 %>%
-  group_by(Transmitter)%>%
-  select(Transmitter, Arrivalnum, Departurenum, Station_distance) %>%
+  group_by(Transmitter, class)%>%
+  select(Transmitter, class, Arrivalnum, Departurenum, Station_distance) %>%
   summarise( seconds=with(m1, max(Departurenum) - min(Arrivalnum)),
              dist= with(m1, max(Station_distance) - min(Station_distance))
   )
@@ -66,9 +63,6 @@ barplot(mt$days, names.arg=mt$Transmitter, cex.names=0.8, ylim=c(0,100),las=2)
 
 
 
-
-
-
 # Calculate migration speed whole study area
 mt$speed <- mt$dist / mt$seconds
 mean(mt$speed)
@@ -76,11 +70,11 @@ sd(mt$speed)
 min(mt$speed)
 max(mt$speed)
 
-# Summarise according to subearea
-aggregate(mt$speed, list(mt$area), mean)
-aggregate(mt$speed, list(mt$area), sd)
-aggregate(mt$speed, list(mt$area), min)
-aggregate(mt$speed, list(mt$area), max)
+# Summarise according to head width class
+aggregate(mt$speed, list(mt$class), mean)
+aggregate(mt$speed, list(mt$class), sd)
+aggregate(mt$speed, list(mt$class), min)
+aggregate(mt$speed, list(mt$class), max)
 
 
 
