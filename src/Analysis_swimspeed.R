@@ -5,6 +5,7 @@
 library(dplyr)
 library(PMCMR)
 library(nlme)
+library(multcomp)
 
 
 # Upload eel data
@@ -77,51 +78,35 @@ aggregate(mt$speed, list(mt$class), min)
 aggregate(mt$speed, list(mt$class), max)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Create boxplot
-boxplot(m1$swimspeed~m2$class, ylab = "Swim speed (m/s)") 
+boxplot(mt$speed~mt$class, ylab = "Migration speed (m/s)") 
 # Create elaborated boxplot with number of eels per head width class
 # make a named list for the location of the number of eels
-eel_per_class <- m2 %>% group_by(class) %>% 
+eel_per_class <- mt %>% group_by(class) %>% 
   summarise(n_eels = n_distinct(Transmitter))
-eels_per_class_list <- rep(1.5, nrow(eel_per_class))
+eels_per_class_list <- rep(0.5, nrow(eel_per_class))
 names(eels_per_class_list) <- as.vector(eel_per_class$class)
 # create ggplot (cfr. styling earlier plot)
-fig_swimspeed <- ggplot(m2, aes(x = class,
-                                 y = swimspeed)) +
+fig_speed <- ggplot(mt, aes(x = class,
+                                 y = speed)) +
   geom_boxplot() +
-  scale_y_continuous(breaks = seq(0, 1.3, by = 0.1)) +
+  scale_y_continuous(breaks = seq(0, 0.4, by = 0.1)) +
   theme_minimal() +
   ylab("Migration speed (m/s)") +
   geom_text(data = data.frame(),
             aes(x = names(eels_per_class_list),
                 y = eels_per_class_list,
                 label = as.character(eel_per_class$n_eels)),
-            col = 'black', size = 4) +
+            col = 'black', size = 8) +
+  scale_x_discrete(limits=c("NH","IH","BH")) +    # Changes oreder of plots
   xlab("Head width class") +
   theme(axis.title.y = element_text(margin = margin(r = 10))) +
-  theme(axis.text = element_text(size = 12),
-        axis.title = element_text(size = 14))
+  theme(axis.text = element_text(size = 18),
+        axis.title = element_text(size = 20))
 #ggsave(fig_residencies_canal_sections, file = './additionals/fig_residencies_canal_sections.png')
-fig_swimspeed
+fig_speed
 
 
-# Calculate mean swim speed speed per head width class
-aggregate(m2$swimspeed, list(m2$class), mean)
-aggregate(m2$swimspeed, list(m2$class), sd)
 
 
 ## Conduct analysis
@@ -129,7 +114,7 @@ aggregate(m2$swimspeed, list(m2$class), sd)
 # ANOVA
 ##################
 
-aov <- aov(m2$swimspeed~m2$class)
+aov <- aov(mt$speed~mt$class)
 plot(aov)  # Check assumptions
 summary(aov)
 
@@ -147,11 +132,12 @@ posthoc.kruskal.dunn.test(x=m2$swimspeed, g=m2$class, p.adjust.method="bonferron
 # Linear mixed effects model - Random intercept model
 ##################
 
-m2$fTransmitter <- factor(m2$Transmitter)
-Mlme1 <- lme(swimspeed ~ class, random = ~1 | fTransmitter,
-             data = m2)
+mt$fTransmitter <- factor(mt$Transmitter)
+Mlme1 <- lme(speed ~ class, random = ~1 | fTransmitter,
+             data = mt)
 summary(Mlme1)
 summary(Mlme1)$tTable[,"p-value"]
-  
-  
+# Conduct multiple comparisons (multcomp package) https://stats.stackexchange.com/questions/237512/how-to-perform-post-hoc-test-on-lmer-model
+summary(glht(Mlme1, linfct = mcp(class = "Tukey")), test = adjusted("holm"))
+
   
