@@ -5,7 +5,7 @@
 library(dplyr)
 library(PMCMR)
 library(nlme)
-library(multcomp)
+#library(multcomp)   # inactivate package, interference with select()
 
 
 # Upload eel data
