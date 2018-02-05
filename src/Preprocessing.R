@@ -49,7 +49,8 @@ eels$Index <- as.numeric(eels$Index)
 # Remove recaptured eels
 eels <- eels[!eels$Hervangst %in% c("1"), ]
 
-
+# Only take eels of Merelbeke into account
+eels <- eels[eels$Vangstlocatie %in% c("RINGVAART (MERELBEKE)"), ]
 
 
 
