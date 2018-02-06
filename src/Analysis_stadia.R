@@ -10,13 +10,14 @@ require(reshape2)
 
 
 # Determine number of NH, inter and BH for each maturation stadium
-sub <- eels[which(eels$Stadium == "MII"),]
-table(sub$class)
+sub <- eels %>%
+  group_by(Stadium, class) %>%
+  summarise(number=n())
 
 
 # Create barplot
 # First put counts in a matrix
-your.mat.data <- c(11,13,19,2,7,0,48,62,82,12,32,4,12,13,20,2,6,3)
+your.mat.data <- c(8,10,15,2,7,0,34,50,62,11,28,4,9,8,14,2,5,3)
 data <- matrix(data = your.mat.data, 
                nrow = 3,
                ncol = 6,
@@ -29,7 +30,7 @@ rownames(data)=c("NH","IH","BH")
 barplot(data, col=colors()[c(29,300,554)] , border="white", space=0.04, font.axis=2, xlab="group")
 
 # Grouped barplot
-barplot(data, col=colors()[c(230,195, 155)] , border="white", font.axis=2, beside=T, legend=rownames(data), xlab="Stage", ylab = "Number of eels", ylim=c(0,100), font.lab=2)
+barplot(data, col=colors()[c(230,195, 155)] , border="white", font.axis=2, beside=T, legend=rownames(data), xlab="Stage", ylab = "Number of eels", ylim=c(0,70), font.lab=2)
 
 
 
