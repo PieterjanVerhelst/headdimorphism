@@ -14,6 +14,7 @@ hd$Width.skull <- as.numeric(hd$Width.skull)
 hd$Head.length <- gsub("\\,", ".", hd$Head.length)
 hd$Head.length <- as.numeric(hd$Head.length)
 
+
 # Rename columns
 colnames(hd)[2] <- "HW"   # Width.skull is head width = HW
 colnames(hd)[3] <- "HL"   # Head.length is head length = HL
@@ -24,6 +25,17 @@ hd$HWHL <- hd$HW/hd$HL
 # Merge two datasets
 eels <- merge(eels, hd, by="ID")
 
+# Summarise morphological characteristics
+#eels$Eye_hor <- gsub("\\,", ".", eels$Eye_hor)
+#eels$Eye_hor <- as.numeric(eels$Eye_hor)
+#eels$Eye_vert <- gsub("\\,", ".", eels$Eye_vert)
+#eels$Eye_vert <- as.numeric(eels$Eye_vert)
+#eels$Pectoral_fin <- gsub("\\,", ".", eels$Pectoral_fin)
+#eels$Pectoral_fin <- as.numeric(eels$Pectoral_fin)
+#aggregate(eels$Length, list(eels$Stadium), mean)
+
+
+
 # Plot HWHL to total length and calculate residuals
 plot(eels$HWHL~eels$Length)
 lm(eels$HWHL~eels$Length)
@@ -31,13 +43,34 @@ lm(eels$HWHL~eels$Length)
 #  lm(formula = eels$HWHL ~ eels$Length)
 #Coefficients:
 #  (Intercept)  eels$Length  
-#   0.260697     0.000936             intercept is 0.260697 and slope 0.000936: y = 0.000936x + 0.260697 (y = ax + b)
+#0.2624438    0.0008713     intercept is 0.2624438 and slope 0.0008713: y = 0.0008713 + 0.2624438 (y = ax + b)
 
-abline(0.260697, 0.000936)
+abline(0.2624438 , 0.0008713)
 # or: abline(lm(eels$HWHL~eels$Length))
 
+
+
+
+############################
+
+#dotchart(eels$HWHL)
+# Outlier can be observed > 0.40
+# Remove this and check if model with and without outlier differ significantly
+
+#eels2 <- eels[!eels$HWHL > 0.40,]
+#m2 <- lm(eels2$HWHL~eels2$Length)
+#plot(eels2$HWHL~eels2$Length)
+#abline(0.2617374 , 0.0008766)
+
+
+############################
+
+
+
+
+
 # Calculate expected HWHL for each eel
-eels$HWHLexp <- (0.000936 * eels$Length) + 0.260697 
+eels$HWHLexp <- (0.0008713 * eels$Length) + 0.2624438
 
 # Calculate difference between real and expected (= residuals)
 eels$diff <- eels$HWHL - eels$HWHLexp         # when positive, head is wider than expected (and vice versa)
