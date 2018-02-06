@@ -9,10 +9,10 @@ library(nlme)
 
 
 # Upload eel data
-m <- read.csv("./data/raw/migration.csv",sep=",",stringsAsFactors = FALSE)
+m <- read.csv("./data/raw/migration.csv",sep=";",stringsAsFactors = FALSE)
 
 # Select Zeeschelde
-m <- filter(m, network == "Zeeschelde")
+m <- filter(m, network == "Zeeschelde" | network == "Albertkanaal")
 
 
 # Extract head width classes
@@ -60,7 +60,7 @@ mt = m1 %>%
 mt$days=mt$seconds/(60*60*24)
 mt$days=round(mt$days, 2)
 par(mar=c(6,4.1,4.1,2.1))
-barplot(mt$days, names.arg=mt$Transmitter, cex.names=0.8, ylim=c(0,100),las=2)
+barplot(mt$days, names.arg=mt$Transmitter, cex.names=0.8, ylim=c(0,80),las=2)
 
 
 
@@ -76,10 +76,12 @@ aggregate(mt$speed, list(mt$class), mean)
 aggregate(mt$speed, list(mt$class), sd)
 aggregate(mt$speed, list(mt$class), min)
 aggregate(mt$speed, list(mt$class), max)
-
+aggregate(mt$speed, list(mt$class), median)
 
 # Create boxplot
 boxplot(mt$speed~mt$class, ylab = "Migration speed (m/s)") 
+boxplot(mt$speed~mt$class, ylab = "Migration speed (m/s)",outline=FALSE)
+
 # Create elaborated boxplot with number of eels per head width class
 # make a named list for the location of the number of eels
 eel_per_class <- mt %>% group_by(class) %>% 
@@ -114,6 +116,14 @@ fig_speed
 # ANOVA
 ##################
 
+# Check assumptions:
+# Normality if p-value > 0.05 (H0: normality)
+shapiro.test(mt$speed)
+
+# Homogeneity of variances
+leveneTest(eels$K, eels$class)
+
+
 aov <- aov(mt$speed~mt$class)
 plot(aov)  # Check assumptions
 summary(aov)
@@ -125,8 +135,31 @@ TukeyHSD(aov, conf.level=0.95, ordered = FALSE)  # sign difference between some 
 # KRUSKAL-WALLIS
 ##################
 
-kruskal.test(swimspeed~class, data=m2)
-posthoc.kruskal.dunn.test(x=m2$swimspeed, g=m2$class, p.adjust.method="bonferroni")
+kruskal.test(speed~class, data=mt)
+posthoc.kruskal.dunn.test(x=mt$speed, g=mt$class, p.adjust.method="bonferroni")
+
+
+# Remove outliers
+mt$speed_round <- round(mt$speed, digits = 5)
+
+dotchart(mt$speed)
+x <- c(
+  0.40447,
+  0.16496,
+  0.12405,
+  0.10092)
+
+mt2 <- mt[!mt$speed_round %in% x,]
+
+shapiro.test(mt2$speed)
+kruskal.test(speed~class, data=mt2)
+aov <-aov(mt2$speed~mt2$class)
+plot(aov)
+summary(aov)
+
+boxplot(mt2$speed~mt2$class, ylab = "Migration speed (m/s)") 
+boxplot(mt2$speed~mt2$class, ylab = "Migration speed (m/s)",outline=FALSE)
+
 
 ##################
 # Linear mixed effects model - Random intercept model
