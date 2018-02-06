@@ -193,6 +193,3 @@ exp(cbind(OR = coef(m), ci))
 
 
 
-
-
-
