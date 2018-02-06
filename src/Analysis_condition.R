@@ -57,7 +57,7 @@ fig_K_class
 
 # Check assumptions:
 # Normality if p-value > 0.05 (H0: normality)
-shapiro.test((eels$K)^2)
+shapiro.test(eels$K)
 
 # Homogeneity of variances
 leveneTest(eels$K, eels$class)
