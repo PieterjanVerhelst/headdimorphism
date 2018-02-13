@@ -6,8 +6,44 @@ require(ggplot2)
 require(MASS)
 require(Hmisc)
 require(reshape2)
+library(mixtools)
+library(mclust)
+
+###############################
+# ANALYSE HEAD WIDTH DISTRIBUTION OVER DIFFERENT MATURATION STADIA
+###############################
+
+# Change subset according to the different maturation stages
+sub <- eels[which(eels$Stadium == "I"),]
 
 
+uni<-Mclust(sub$diff,1)
+bi<-Mclust(sub$diff,2)
+# Calculate AIC manually because of an unknown error
+# https://stackoverflow.com/questions/28342653/model-selection-with-aic
+2*uni$df - 2*uni$loglik
+2*bi$df - 2*bi$loglik
+# For BIC and LogLikelihood, check summary
+summary(uni)    # small values of BIC, AIC and LogLikelihood indicate better models
+summary(bi)
+
+
+# Create plot
+residuals <- sub$diff
+mixmdl <- normalmixEM(residuals, maxit = 2000, k=2)
+plot(mixmdl,which=2, xlim=c(-0.10, 0.15), breaks = 10, whichplots = 2)
+lines(density(residuals), lty=2, lwd=2)
+
+xfit<-seq(min(sub$diff),max(sub$diff),length=100)
+yfit<-dnorm(xfit,mean=mean(sub$diff),sd=sd(sub$diff))
+lines(xfit,yfit, col="blue", lwd = 2)  # normal pdf
+# Export as SVG
+
+
+
+###############################
+# ANALYSE DIFFERENT PROPORTION IN HEAD WIDTH CLASSES
+###############################
 
 # Determine number of NH, inter and BH for each maturation stadium
 sub <- eels %>%
