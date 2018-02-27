@@ -5,6 +5,7 @@
 library(dplyr)
 library(PMCMR)
 library(nlme)
+library(car)
 #library(multcomp)   # inactivate package, interference with select()
 
 
@@ -59,7 +60,7 @@ mt = m1 %>%
 mt$days=mt$seconds/(60*60*24)
 mt$days=round(mt$days, 2)
 par(mar=c(6,4.1,4.1,2.1))
-barplot(mt$days, names.arg=mt$Transmitter, cex.names=0.8, ylim=c(0,80),las=2)
+barplot(mt$days, names.arg=mt$Transmitter, cex.names=0.8, ylim=c(0,1.3*max(mt$days)),las=2)
 
 
 
@@ -120,7 +121,7 @@ fig_speed
 shapiro.test(mt$speed)
 
 # Homogeneity of variances
-leveneTest(eels$K, eels$class)
+leveneTest(mt$speed, mt$class)
 
 
 aov <- aov(mt$speed~mt$class)
