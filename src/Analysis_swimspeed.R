@@ -8,7 +8,7 @@ library(nlme)
 #library(multcomp)   # inactivate package, interference with select()
 
 
-# Upload eel data
+# Upload eel telemetry data
 m <- read.csv("./data/raw/migration.csv",sep=";",stringsAsFactors = FALSE)
 
 # Select Zeeschelde
