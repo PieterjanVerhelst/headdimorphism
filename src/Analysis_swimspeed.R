@@ -27,6 +27,7 @@ table(hw$class)
 
 # Merge head width class (hw dataset) to swim speeds (m1 dataset)
 m$Transmitter<-gsub("A69-1601-","",m$Transmitter)
+m$Transmitter<-gsub("A69-1602-","",m$Transmitter)
 m1 <- merge(m, hw, by="Transmitter")
 
 
