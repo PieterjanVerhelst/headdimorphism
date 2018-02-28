@@ -146,6 +146,7 @@ mt$speed_round <- round(mt$speed, digits = 5)
 dotchart(mt$speed)
 x <- c(
   0.40447,
+  0.38925,
   0.16496,
   0.12405,
   0.10092)
