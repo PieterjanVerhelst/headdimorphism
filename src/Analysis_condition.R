@@ -112,6 +112,9 @@ x <- c(
 1.5027151,
 0.5149608)
 
+
+eels$Kround <- round(eels$K, digits = 7)
+
 eels2 <- eels[!eels$Kround %in% x,]
 
 
