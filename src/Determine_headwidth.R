@@ -129,8 +129,42 @@ plot(1:6,subset$stadium_mean,pch=19,xlab="",ylab="",xaxt="n",xlim=c(0.5,6),
 lines(rbind(1:6,1:6,NA),rbind(subset$stadium_mean-subset$stadium_sd,subset$stadium_mean+subset$stadium_sd,NA))
 axis(side=1,at=1:6,labels=subset$Stadium)
 
+
+
 # Anova
 boxplot(eels$diff ~ eels$Stadium, ylab="Residuals", xlab="Stage")
+
+#=========================================
+# Plot residuals in relation to stadium
+#=========================================
+
+# make a named list for the location of the number of eels
+eel_per_stadium <- eels %>% group_by(Stadium) %>% 
+  summarise(n_eels = n_distinct(ID))
+eels_per_stadium_list <- rep(0.15, nrow(eel_per_stadium))
+names(eels_per_stadium_list) <- as.vector(eel_per_stadium$Stadium)
+# create ggplot (cfr. styling earlier plot)
+fig_residuals_stadium <- ggplot(eels, aes(x = Stadium,
+                                          y = diff)) +
+  geom_boxplot() +
+  scale_y_continuous(breaks = seq(0, 0.15, by = 0.05)) +
+  theme_minimal() +
+  ylab("Residuals") +
+  geom_text(data = data.frame(),
+            aes(x = names(eels_per_stadium_list),
+                y = eels_per_stadium_list,
+                label = as.character(eel_per_stadium$n_eels)),
+            col = 'black', size = 6) +
+  xlab("Stage") +
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0))) +   #t: top, r: right; b = bottom, l = left
+  theme(axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 0, l = 0))) +
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 16))
+#ggsave(fig_residencies_canal_sections, file = './additionals/fig_residencies_canal_sections.png')
+fig_residuals_stadium
+
+
+
 aov <- aov(eels$diff ~ eels$Stadium)
 plot(aov)
 summary(aov)
