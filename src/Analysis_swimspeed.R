@@ -32,20 +32,6 @@ m1 <- merge(m, hw, by="Transmitter")
 
 
 
-# Eel 52657 had two phase migration due to its aborted migration which proceeded two months later
-# Select last migration phase
-#ind52657 <- m1[which(m1$Transmitter == "52657"),]
-#ind52657 <- ind52657[order(as.POSIXct(strptime(ind52657$Arrival,"%Y-%m-%d %H:%M:%S"))),]
-# Eel is considered migratory from station s-wetteren 2017-02-23 16:58:00
-# Select those data
-#ind52657 <- ind52657[!ind52657$Arrival < '2017-02-23 16:58:00',]
-# Now remove that eel from migration dataset
-#m1 <- m1[!m1$Transmitter %in% c("52657"), ]
-# Bind individual dataset to migration dataset
-#m1 <- rbind(m1, ind52657)
-
-
-
 
 # Calculate migration speed
 # Calculate migration time and distance + plot migration time
