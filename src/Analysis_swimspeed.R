@@ -10,7 +10,7 @@ library(car)
 
 
 # Upload eel telemetry data
-m <- read.csv("./data/raw/migration.csv",sep=";",stringsAsFactors = FALSE)
+m <- read.csv("./data/raw/migration.csv",sep=",",stringsAsFactors = FALSE)
 
 # Select Zeeschelde
 m <- filter(m, network == "Zeeschelde" | network == "Albertkanaal")
