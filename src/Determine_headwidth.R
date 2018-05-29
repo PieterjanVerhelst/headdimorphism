@@ -147,7 +147,7 @@ names(eels_per_stadium_list) <- as.vector(eel_per_stadium$Stadium)
 fig_residuals_stadium <- ggplot(eels, aes(x = Stadium,
                                           y = diff)) +
   geom_boxplot() +
-  scale_y_continuous(breaks = seq(0, 0.15, by = 0.05)) +
+  scale_y_continuous(breaks = seq(-0.05, 0.15, by = 0.05)) +
   theme_minimal() +
   ylab("Residuals") +
   geom_text(data = data.frame(),
