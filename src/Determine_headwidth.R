@@ -81,7 +81,7 @@ eels$diff_sd <- sd(eels$diff)
 
 
 
-# Classify headwidth of the eels
+# Classify headwidth of the eels as an exploratory step
 # NH: residual < mean - sd
 # intermediate: mean +/- sd
 # BH: residual > mean + sd
