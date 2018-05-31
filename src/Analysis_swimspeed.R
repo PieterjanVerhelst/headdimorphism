@@ -6,6 +6,7 @@ library(dplyr)
 library(PMCMR)
 library(nlme)
 library(car)
+library(lattice)
 #library(multcomp)   # inactivate package, interference with select()
 
 
@@ -65,7 +66,8 @@ max(mt$speed)
 
 #### Apply linear regression ####
 
-plot(mt$speed~mt$diff, ylab = "Migration speed", xlab = "Unstandardised residuals") 
+plot(mt$speed~mt$diff, ylab = "Migration speed", xlab = "Unstandardised residuals",
+     cex.lab=1.25) 
 lm(mt$speed~mt$diff)
 #Call:
 #  lm(formula = mt$speed ~ mt$diff)
@@ -103,10 +105,6 @@ qqmath( ~ resid(model1),
 
 
 
-
-
-
-
 # Remove outliers
 mt$speed_round <- round(mt$speed, digits = 5)
 
@@ -114,10 +112,10 @@ dotchart(mt$speed)
 x <- c(
   0.40362,
   0.38844,
-  0.16461,
-  0.09061,
-  0.08572,
-  0.07940)
+  0.16461) #,
+#  0.09061,
+#  0.08572,
+#  0.07940)
 
 mt2 <- mt[!mt$speed_round %in% x,]
 
@@ -135,12 +133,12 @@ boxplot(mt2$speed~mt2$class, ylab = "Migration speed (m/s)",outline=FALSE)
 # Linear mixed effects model - Random intercept model
 ##################
 
-mt$fTransmitter <- factor(mt$Transmitter)
-Mlme1 <- lme(speed ~ class, random = ~1 | fTransmitter,
-             data = mt)
+mt2$fTransmitter <- factor(mt2$Transmitter)
+Mlme1 <- lme(speed ~ diff, random = ~1 | fTransmitter,
+             data = mt2)
 summary(Mlme1)
 summary(Mlme1)$tTable[,"p-value"]
 # Conduct multiple comparisons (multcomp package) https://stats.stackexchange.com/questions/237512/how-to-perform-post-hoc-test-on-lmer-model
-summary(glht(Mlme1, linfct = mcp(class = "Tukey")), test = adjusted("holm"))
+#summary(glht(Mlme1, linfct = mcp(class = "Tukey")), test = adjusted("holm"))
 
   
