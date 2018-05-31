@@ -14,7 +14,7 @@ max(eels$K)
 
 
 # First check if K differs according to maturation stadia
-plot(eels$K~eels$diff, ylab = "K") 
+plot(eels$K~eels$diff, ylab = "Kn", xlab = "Unstandardised residuals") 
 lm(eels$K~eels$diff)
 #Call:
 #  lm(formula = eels$K ~ eels$diff)
