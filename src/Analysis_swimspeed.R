@@ -66,7 +66,7 @@ max(mt$speed)
 
 #### Apply linear regression ####
 
-plot(mt$speed~mt$diff, ylab = "Migration speed", xlab = "Unstandardised residuals",
+plot(mt$speed~mt$diff, ylab = "Migration speed", xlab = "Unstandardized residuals",
      cex.lab=1.25) 
 lm(mt$speed~mt$diff)
 #Call:
