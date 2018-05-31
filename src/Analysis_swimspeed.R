@@ -18,14 +18,14 @@ m <- filter(m, network == "Zeeschelde" | network == "Albertkanaal")
 
 # Extract head width classes
 # Run 'Determine_headwidth.R' manually
-hw <- select(eels, Zendernummer, class)
+hw <- select(eels, Zendernummer, diff)
 colnames(hw)[1] <- "Transmitter"
 # Remove rows with NA
 # i.e. eels with no Transmitter
 hw <- na.omit(hw)
-table(hw$class)
 
-# Merge head width class (hw dataset) to swim speeds (m1 dataset)
+
+# Merge head width residuals (hw dataset) to swim speeds (m1 dataset)
 m$Transmitter<-gsub("A69-1601-","",m$Transmitter)
 m$Transmitter<-gsub("A69-1602-","",m$Transmitter)
 m1 <- merge(m, hw, by="Transmitter")
@@ -36,10 +36,11 @@ m1 <- merge(m, hw, by="Transmitter")
 # Calculate migration speed
 # Calculate migration time and distance + plot migration time
 mt = m1 %>%
-  group_by(Transmitter, class)%>%
-  select(Transmitter, class, Arrivalnum, Departurenum, Station_distance) %>%
+  group_by(Transmitter)%>%
+#  select(Transmitter, diff, Arrivalnum, Departurenum, Station_distance) %>%
   summarise( seconds=with(m1, max(Departurenum) - min(Arrivalnum)),
-             dist= with(m1, max(Station_distance) - min(Station_distance))
+             dist= with(m1, max(Station_distance) - min(Station_distance)),
+             diff= with(m1, min(diff))
   )
 
 
@@ -58,72 +59,52 @@ sd(mt$speed)
 min(mt$speed)
 max(mt$speed)
 
-# Summarise according to head width class
-aggregate(mt$speed, list(mt$class), mean)
-aggregate(mt$speed, list(mt$class), sd)
-aggregate(mt$speed, list(mt$class), min)
-aggregate(mt$speed, list(mt$class), max)
-aggregate(mt$speed, list(mt$class), median)
-
-# Create boxplot
-boxplot(mt$speed~mt$class, ylab = "Migration speed (m/s)") 
-boxplot(mt$speed~mt$class, ylab = "Migration speed (m/s)",outline=FALSE)
-
-# Create elaborated boxplot with number of eels per head width class
-# make a named list for the location of the number of eels
-eel_per_class <- mt %>% group_by(class) %>% 
-  summarise(n_eels = n_distinct(Transmitter))
-eels_per_class_list <- rep(0.5, nrow(eel_per_class))
-names(eels_per_class_list) <- as.vector(eel_per_class$class)
-# create ggplot (cfr. styling earlier plot)
-fig_speed <- ggplot(mt, aes(x = class,
-                                 y = speed)) +
-  geom_boxplot() +
-  scale_y_continuous(breaks = seq(0, 0.4, by = 0.1)) +
-  theme_minimal() +
-  ylab("Migration speed (m/s)") +
-  geom_text(data = data.frame(),
-            aes(x = names(eels_per_class_list),
-                y = eels_per_class_list,
-                label = as.character(eel_per_class$n_eels)),
-            col = 'black', size = 8) +
-  scale_x_discrete(limits=c("NH","IH","BH")) +    # Changes oreder of plots
-  xlab("Head width class") +
-  theme(axis.title.y = element_text(margin = margin(r = 10))) +
-  theme(axis.text = element_text(size = 18),
-        axis.title = element_text(size = 20))
-#ggsave(fig_residencies_canal_sections, file = './additionals/fig_residencies_canal_sections.png')
-fig_speed
 
 
 
 
-## Conduct analysis
-##################
-# ANOVA
-##################
+#### Apply linear regression ####
 
-# Check assumptions:
-# Normality if p-value > 0.05 (H0: normality)
-shapiro.test(mt$speed)
+plot(mt$speed~mt$diff, ylab = "Migration speed", xlab = "Unstandardised residuals") 
+lm(mt$speed~mt$diff)
+#Call:
+#  lm(formula = mt$speed ~ mt$diff)
+#Coefficients:
+#  (Intercept)      mt$diff  
+#0.05024      0.21889 
 
-# Homogeneity of variances
-leveneTest(mt$speed, mt$class)
-
-
-aov <- aov(mt$speed~mt$class)
-plot(aov)  # Check assumptions
-summary(aov)
-
-TukeyHSD(aov, conf.level=0.95, ordered = FALSE)  # sign difference between some groups, so nested design
+abline(0.05024 , 0.21889)
 
 
-##################
-# KRUSKAL-WALLIS
-##################
+model1 = lm(speed ~ diff, data = mt)
+summary(model1)
 
-kruskal.test(speed~class, data=mt)
-posthoc.kruskal.dunn.test(x=mt$speed, g=mt$class, p.adjust.method="bonferroni")
+
+# Fit residuals to check for any patterns
+xyplot(resid(model1) ~ fitted(model1),
+       xlab = "Fitted Values",
+       ylab = "Residuals",
+       main = "Residual Diagnostic Plot",
+       panel = function(x, y, ...)
+       {
+         panel.grid(h = -1, v = -1)
+         panel.abline(h = 0)
+         panel.xyplot(x, y, ...)
+       }
+)
+
+
+# Check normality (data should approach straight line)
+qqmath( ~ resid(model1),
+        xlab = "Theoretical Quantiles",
+        ylab = "Residuals"
+)
+
+
+
+
+
+
 
 
 # Remove outliers
