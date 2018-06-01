@@ -3,7 +3,7 @@
 
 
 library(PMCMR)
-
+library(lattice)
 
 # Calculate condition metrics
 
