@@ -17,6 +17,18 @@ library(mixtools)
 library(mclust)
 
 
+#set.seed(2000)
+
+# Randomly select a number of rows of the dataset
+#eels50 <- sample_n(eels, 136)  # select randomly 50% of the dataset
+#eels75 <- sample_n(eels, 204)
+#eels90 <- sample_n(eels, 245)
+
+#eels2 <- eels
+#eels <- eels2
+#eels <- eels90
+
+
 ###############
 # UNIMODAL
 ###############
