@@ -40,5 +40,5 @@ additionals/
 # ignore readme file
 README.md
 
-# ignore telemetry dataset; will be used for other purposes as well
-migration.csv
+# Mask datasets
+data/
