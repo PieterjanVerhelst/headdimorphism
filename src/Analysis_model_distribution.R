@@ -107,8 +107,8 @@ AIC(bi)
 BIC(uni)
 BIC(bi)
 
-summary(uni)    # small values of BIC, AIC and log likelihood indicate better models
-summary(bi)
+#summary(uni)    # small values of BIC, AIC and log likelihood indicate better models
+#summary(bi)
 
 
 
