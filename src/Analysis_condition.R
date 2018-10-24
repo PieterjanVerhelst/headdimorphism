@@ -41,7 +41,7 @@ summary(model1)
 library(pwr)
 
 anova(model1)
-pwr.f2.test(u = 1, v = , f2 = 0.15, sig.level = 0.05, power = ) # u is dfn. The dfn is the number of degrees of freedom that the estimate of variance used in the numerator is based on. v is dfd. The dfd is the number of degrees of freedom that the estimate used in the denominator is based on. 
+pwr.f2.test(u = 1, v = 270, f2 = 0.15, sig.level = 0.05, power = ) # u is dfn. The dfn is the number of degrees of freedom that the estimate of variance used in the numerator is based on. v is dfd. The dfd is the number of degrees of freedom that the estimate used in the denominator is based on. 
 
 # Fit residuals to check for any patterns
 xyplot(resid(model1) ~ fitted(model1),
