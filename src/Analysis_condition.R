@@ -37,6 +37,13 @@ xyplot(K ~ diff, data = eels,
 model1 = lm(K ~ diff, data = eels)
 summary(model1)
 
+
+# Center variable
+eels$diff_centered <- scale(eels$diff)
+
+model2 = lm(K ~ diff_centered, data = eels)
+summary(model2)
+
 # Check statistical power
 library(pwr)
 
